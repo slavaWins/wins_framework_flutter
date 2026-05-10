@@ -2,22 +2,23 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:wins_core_flutter/helpers/ToastEasy.dart';
 
-import '../../firebase_options.dart';
-import '../../generate/lib/api.dart';
-import '../Auth/Services/AuthState.dart';
 
 class FbPushService {
+
+  static ValueChanged<String>?  OnTakePushToken;
+  static bool  IsHavePushToken=false;
+
+
   bool isAndroid() {
     return !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
   }
 
-  Future<void> OnRunApp() async {
+  Future<void> OnRunApp(FirebaseOptions currentPlatform) async {
     if (isAndroid()) {
       if (Firebase.apps.isEmpty) {
         await Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
+          options: currentPlatform,
         );
       }
 
@@ -33,23 +34,22 @@ class FbPushService {
     print("-------push TOKEN:");
     print(token);
 
-    var a = AuthState();
-    await a.savePushToken(token ?? "");
+    if(OnTakePushToken!=null) {
+      OnTakePushToken!(token ?? "");
+    }
+
   }
 
 
-  void ShowPushPromise() async {
+  void ShowPushPromise(FirebaseOptions currentPlatform) async {
 
-    var a = AuthState();
 
-    var tokenHave =    await a.getPushToken();
-
-    if(tokenHave!=null){
+    if(IsHavePushToken){
       return;
     }
 
     await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
+      options: currentPlatform,
     );
 
 
@@ -89,19 +89,12 @@ class FbPushService {
       if (token != null) {
         print('send token');
 
-        var a = AuthState();
-        await a.savePushToken(token ?? "");
 
-        print("PushNotificationApi send push");
-        final api_instance = PushNotificationApi();
-        await api_instance.notifyServicePushNotificationSetPushTokenPost(
-          PushTokenUpdateRequest(
-            sessionId: (await a.getSessionId()) ?? 0,
-            token: token!,
-          ),
-        );
+        if(OnTakePushToken!=null) {
+          OnTakePushToken!(token);
+        }
 
-        ToastEasy.Info("Пуш уведомления подключены", Icons.import_contacts);
+
       }
     }
 

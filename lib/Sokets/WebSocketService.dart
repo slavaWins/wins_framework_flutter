@@ -1,15 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:signalr_core_new/signalr_core_new.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-
-import '../../routes_config.dart';
-import '../Auth/Services/AuthState.dart';
-import '../Shared/Services/CryptoHelper.dart';
-import 'EventerWebSocketService.dart';
+import 'package:wins_core_flutter/WinsCoreConfig.dart';
+import 'package:wins_core_flutter/helpers/ToastEasy.dart';
+import '../helpers/CryptoHelper.dart';
+import 'IEventerWebSocketService.dart';
 
 class WebSocketService with ChangeNotifier {
   static final WebSocketService _instance = WebSocketService._internal();
@@ -23,19 +21,19 @@ class WebSocketService with ChangeNotifier {
     connect();
   }
 
-  final eventerWebSocketService = EventerWebSocketService();
-
-  final authState = AuthState();
+  IEventerWebSocketService eventerWebSocketService = EventerWebSocketDefaultService();
 
   WebSocketChannel? _channel;
 
   // Обработка входящих сообщений
 
   Future<String?> _Decrypt(String data) async {
-    return await CryptoHelper.decrypt(
-      data,
-      AuthState.sessionDevice!.cryptToken!,
-    );
+    if (WinsCoreConfig.cryptToken == null) {
+      ToastEasy.Error("Не удалось расшифровать данные");
+      return null;
+    }
+
+    return await CryptoHelper.decrypt(data, WinsCoreConfig.cryptToken!);
   }
 
   void _handleMessage(dynamic message) async {
@@ -62,6 +60,7 @@ class WebSocketService with ChangeNotifier {
     var dataRaw = inner["data"];
 
     try {
+
       eventerWebSocketService.onData(eventType, dataRaw);
     } catch (e) {
       print("Error socket on maping");
@@ -86,7 +85,7 @@ class WebSocketService with ChangeNotifier {
 
     await Future.delayed(const Duration(seconds: 1));
 
-    var _jwtToken = (await authState.getJwtToken()) ?? "";
+    var _jwtToken = WinsCoreConfig.jwt ?? "";
     _disconnect(); // Закрываем предыдущее подключение если было
 
     if (_jwtToken.length == 0) {
@@ -97,18 +96,18 @@ class WebSocketService with ChangeNotifier {
     }
 
     var urlFull =
-        RoutesConfig.domainApi +
-            "/signal-service/signal?access_token=" +
-            _jwtToken;
+        WinsCoreConfig.domainApi +
+        "/signal-service/signal?access_token=" +
+        _jwtToken;
 
     try {
       final connection = HubConnectionBuilder()
           .withUrl(
-        urlFull,
-        HttpConnectionOptions(
-          //logging: (level, message) => print(message),
-        ),
-      )
+            urlFull,
+            HttpConnectionOptions(
+              //logging: (level, message) => print(message),
+            ),
+          )
           .build();
 
       await connection.start();

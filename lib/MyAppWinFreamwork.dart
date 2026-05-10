@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:toastification/toastification.dart';
+import 'package:wins_core_flutter/style/AppStyle.dart';
 
+class MyAppWinFreamwork extends StatefulWidget {
+  final String title;
+  final Widget  homeBuilder;
+  final Function()? onInit;
+  final Function()? onDispose;
 
-Future<void> main() async {
-
-  runApp(const MyApp());
-}
-
-//class MyApp extends StatefulWidget {  const MyApp({super.key});
-
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyAppWinFreamwork({
+    Key? key,
+    required this.title,
+    required this.homeBuilder,
+    this.onInit,
+    this.onDispose,
+  }) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<MyAppWinFreamwork> createState() => _MyAppWinFreamworkState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppWinFreamworkState extends State<MyAppWinFreamwork> {
   final _themeNotification = ThemeNotification();
-
-  final presenceManager = PresenceManager();
 
   void OnGlobalStateUpdate() {
     setState(() {});
@@ -28,14 +31,13 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    presenceManager.init();
+    widget.onInit?.call();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    widget.onDispose?.call();
     super.dispose();
-    presenceManager.dispose();
   }
 
   @override
@@ -48,7 +50,7 @@ class _MyAppState extends State<MyApp> {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'App',
+      title: widget.title,
 
       builder: (context, child) {
         // Этот builder не сбрасывается при навигации
@@ -66,9 +68,7 @@ class _MyAppState extends State<MyApp> {
 
         //  applyThemeToAll: true,
         textTheme: TextTheme(
-
-
-            titleSmall: TextStyle(
+          titleSmall: TextStyle(
             fontSize: 16,
             color: AppStyle().black,
             fontWeight: FontWeight.w400,
@@ -98,29 +98,29 @@ class _MyAppState extends State<MyApp> {
             fontFamily: "Main",
             height: 1.20,
           ),
-
         ),
 
         scaffoldBackgroundColor: AppStyle().background,
         colorScheme: ColorScheme(
           brightness: AppStyle().themeNameFlutter,
           primary: AppStyle().black,
-          onPrimary: AppStyle().black,  // цвет текста на primary
+          onPrimary: AppStyle().black,
+          // цвет текста на primary
           secondary: AppStyle().primary,
           onSecondary: AppStyle().black,
           surface: AppStyle().background,
-          onSurface: AppStyle().black,  // 👈 ЭТО ОТВЕЧАЕТ ЗА ЦВЕТ ТЕКСТА ПО УМОЛЧАНИЮ!
+          onSurface: AppStyle().black,
+          // 👈 ЭТО ОТВЕЧАЕТ ЗА ЦВЕТ ТЕКСТА ПО УМОЛЧАНИЮ!
           error: Colors.red,
           onError: Colors.white,
         ),
         primaryColor: AppStyle().primary,
-        focusColor:  AppStyle().primary,
+        focusColor: AppStyle().primary,
         fontFamily: "Main",
-        highlightColor:  AppStyle().primary,
-
+        highlightColor: AppStyle().primary,
       ),
 
-      home: LogoPage(),
+      home: widget.homeBuilder,
     );
   }
 }
