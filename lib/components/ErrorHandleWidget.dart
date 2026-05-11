@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:wins_core_flutter/style/Texts.dart';
 
 import '../helpers/ApiException.dart';
 
 class ErrorHandleWidget extends StatefulWidget {
   final bool isMini;
+  final Color? color;
 
-  const ErrorHandleWidget({super.key, required this.isMini});
+  const ErrorHandleWidget({super.key, required this.isMini,this.color});
 
   @override
   State<ErrorHandleWidget> createState() => ErrorHandleWidgetState();
@@ -161,7 +163,7 @@ class ErrorHandleWidgetState extends State<ErrorHandleWidget> {
               ),
 
               if (widget.isMini)
-                Text("Загрузка", style: TextStyle(fontSize: 13)),
+                Text1("Загрузка", color: widget.color ,),
             ],
           ),
 

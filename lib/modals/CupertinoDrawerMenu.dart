@@ -7,7 +7,7 @@ class CupertinoDrawerMenu extends StatelessWidget {
 
   const CupertinoDrawerMenu({super.key, required this.children});
 
-  static void OpenMenu(BuildContext _context, Widget children) {
+  static void OpenMenu(BuildContext _context, Widget children, double? maxWidth) {
     showDialog(
       context: _context,
       barrierColor: Colors.black.withAlpha(95), // Полупрозрачный фон
@@ -39,15 +39,19 @@ class CupertinoModalWidget extends StatelessWidget {
   final Widget children;
   final String? title;
   final Color? backgroundColor;
+  final double? maxWidth;
+  final double? maxHeight;
 
   const CupertinoModalWidget({
     super.key,
     required this.children,
     this.title,
     this.backgroundColor,
+    this.maxWidth,
+    this.maxHeight,
   });
 
-  static void OpenMenu(BuildContext context, Widget children, {String? title, Color? backgroundColor}) {
+  static void OpenMenu(BuildContext context, Widget children, {String? title, Color? backgroundColor, double? maxWidth, double? maxHeight}) {
     showDialog(
       context: context,
       barrierColor: Colors.black.withAlpha(100),
@@ -56,6 +60,8 @@ class CupertinoModalWidget extends StatelessWidget {
             backgroundColor: backgroundColor,
             children: children,
             title: title,
+              maxWidth:maxWidth,
+            maxHeight:maxHeight,
           ),
     );
   }
@@ -65,8 +71,8 @@ class CupertinoModalWidget extends StatelessWidget {
     return Center(
       child: Container(
         constraints: BoxConstraints(
-          maxWidth: 460,
-          maxHeight: MediaQuery
+          maxWidth: maxWidth ?? 460,
+          maxHeight:maxHeight ?? MediaQuery
               .of(context)
               .size
               .height * 0.9,

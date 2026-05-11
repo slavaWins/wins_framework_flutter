@@ -7,6 +7,8 @@ class CardContainer extends StatelessWidget {
   final double? padding;
   final double? margin;
   final Color? color;
+  final double? spacing;
+  final CrossAxisAlignment? crossAxisAlignment;
 
   const CardContainer({
     Key? key,
@@ -15,6 +17,8 @@ class CardContainer extends StatelessWidget {
     this.padding,
     this.margin,
     this.color,
+    this.crossAxisAlignment,
+    this.spacing,
   }) : super(key: key);
 
   @override
@@ -36,7 +40,10 @@ class CardContainer extends StatelessWidget {
         ],
         */
       ),
-      child: Column(mainAxisSize: MainAxisSize.min, children: children),
+      child: Column(mainAxisSize: MainAxisSize.min,
+          spacing: spacing  ?? 0,
+          crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.center,
+          children: children),
     );
   }
 }
