@@ -119,7 +119,9 @@ class CupertinoModalWidget extends StatelessWidget {
             ),
           ),
 
-          WinButtonWidget(child: Icon(Icons.clear), onPressed: ()=>{
+          WinButtonWidget(
+            isBordered: false,
+            child: Icon(Icons.clear), onPressed: ()=>{
             Navigator.of(context).pop()
           },),
 
