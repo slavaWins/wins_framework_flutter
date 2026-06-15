@@ -74,6 +74,8 @@ class WinButtonWidget extends StatelessWidget {
         padding: padding,
         side:  (isBordered) ?  BorderSide(color: AppStyle().black, width: 1) :   BorderSide.none,  // 👈 Убираем бордер
         backgroundColor: Colors.transparent,  // 👈 Прозрачный фон
+        minimumSize: Size(0, 0),
+
       ),
       onPressed: onPressed,
       child: Row(

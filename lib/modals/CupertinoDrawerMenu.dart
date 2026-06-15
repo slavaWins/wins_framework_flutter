@@ -71,6 +71,7 @@ class CupertinoModalWidget extends StatelessWidget {
     return Center(
       child: Container(
         constraints: BoxConstraints(
+          minHeight: 0,
           maxWidth: maxWidth ?? 460,
           maxHeight:maxHeight ?? MediaQuery
               .of(context)
@@ -79,8 +80,8 @@ class CupertinoModalWidget extends StatelessWidget {
         ),
         margin: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: backgroundColor ?? AppStyle().background,
-          borderRadius: BorderRadius.circular(12),
+          color:  backgroundColor ?? AppStyle().background,
+          borderRadius: BorderRadius.circular(AppStyle().radiusCard),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,

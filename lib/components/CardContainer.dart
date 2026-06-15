@@ -8,6 +8,7 @@ class CardContainer extends StatelessWidget {
   final double? margin;
   final Color? color;
   final double? spacing;
+  final bool isCliping;
   final CrossAxisAlignment? crossAxisAlignment;
 
   const CardContainer({
@@ -19,11 +20,13 @@ class CardContainer extends StatelessWidget {
     this.color,
     this.crossAxisAlignment,
     this.spacing,
+    this.isCliping=false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+
       padding: EdgeInsetsGeometry.all(padding ?? AppStyle().paddingCard),
       margin: EdgeInsetsGeometry.all(margin ?? 0),
       clipBehavior: Clip.hardEdge,
