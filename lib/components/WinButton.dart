@@ -21,13 +21,20 @@ class WinButton extends StatelessWidget {
     this.isLeft,
     this.customBackground,
     this.radius = 32,
-    this.isBordered = false, this.padding,
+    this.isBordered = true, this.padding,
   });
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
       onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        padding: padding,
+        side:  (isBordered) ?  BorderSide(color: AppStyle().black, width: 1) :   BorderSide.none,  // 👈 Убираем бордер
+        backgroundColor: Colors.transparent,  // 👈 Прозрачный фон
+        //minimumSize: Size(0, 0),
+
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         spacing: 4,
