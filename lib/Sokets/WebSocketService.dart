@@ -135,14 +135,14 @@ class WebSocketService with ChangeNotifier {
 
       _isConnecting = false;
       isReconecteing = false;
-      print('WebSocket connection error: $e');
+      print('[WS] Error: $e');
       _reconnect();
     } catch (e) {
       if (kDebugMode) {}
 
       _isConnecting = false;
       isReconecteing = false;
-      print('WebSocket connection error: $e');
+      print('[WS] Error: $e');
       _reconnect();
     } finally {
       _isConnecting = false;

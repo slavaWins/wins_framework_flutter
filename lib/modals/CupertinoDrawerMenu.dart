@@ -39,8 +39,10 @@ class CupertinoModalWidget extends StatelessWidget {
   final Widget children;
   final String? title;
   final Color? backgroundColor;
+  final Color? overlayColor;
   final double? maxWidth;
   final double? maxHeight;
+  final VoidCallback? onClose;
 
   const CupertinoModalWidget({
     super.key,
@@ -49,21 +51,28 @@ class CupertinoModalWidget extends StatelessWidget {
     this.backgroundColor,
     this.maxWidth,
     this.maxHeight,
+    this.overlayColor,
+    this.onClose,
   });
 
-  static void OpenMenu(BuildContext context, Widget children, {String? title, Color? backgroundColor, double? maxWidth, double? maxHeight}) {
+  static void OpenMenu(BuildContext context, Widget children, {String? title, Color? backgroundColor,Color? overlayColor, double? maxWidth, double? maxHeight, VoidCallback? onClose}) {
     showDialog(
       context: context,
-      barrierColor: Colors.black.withAlpha(100),
+      barrierColor: overlayColor ?? Colors.black.withAlpha(100),
+
       builder: (context) =>
           CupertinoModalWidget(
+
             backgroundColor: backgroundColor,
+            overlayColor: overlayColor,
             children: children,
             title: title,
               maxWidth:maxWidth,
             maxHeight:maxHeight,
           ),
-    );
+    ).then((onValue){
+      if(onClose!=null)onClose();
+    });
   }
 
   @override
