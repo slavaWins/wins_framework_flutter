@@ -43,11 +43,16 @@ class CardContainer extends StatelessWidget {
         ],
         */
       ),
-      child: Column(mainAxisSize: MainAxisSize.min,
+      child: Material(
+
+        color: color ?? AppStyle().card,
+        borderRadius: BorderRadius.circular(rad ?? 20),
+
+        child:  Column(mainAxisSize: MainAxisSize.min,
           spacing: spacing  ?? 0,
           crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.center,
           children: children),
-    );
+    ));
   }
 }
 

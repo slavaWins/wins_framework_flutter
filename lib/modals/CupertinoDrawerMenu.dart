@@ -117,7 +117,7 @@ class CupertinoModalWidget extends StatelessWidget {
         border: Border(
           bottom: BorderSide(
             color: Colors.black.withAlpha(60),
-            width: 0.5,
+            width: 2.5,
           ),
         ),
       ),
@@ -126,11 +126,11 @@ class CupertinoModalWidget extends StatelessWidget {
           Expanded(
             child: Text(
               titleText,
-              style: TextStyle(
-                fontSize: 18,
+              style:  TextStyle(
                 color: AppStyle().black,
+                fontSize: 14,
+                decoration: TextDecoration.none, // убрать эту строку
               ),
-              maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
           ),
